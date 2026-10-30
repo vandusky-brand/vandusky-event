@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VANDUSKY — Free Shirt Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#fff;font-family:Montserrat,Arial,sans-serif}
+nav{padding:22px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #292929}
+.logo{font-size:22px;font-weight:900;letter-spacing:5px}
+nav button,.btn{background:#fff;color:#000;border:0;padding:13px 18px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;font-size:11px;letter-spacing:1px}
+.hero{text-align:center;padding:100px 20px;background:linear-gradient(#0009,#000d),url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1200') center/cover}
+.hero h1{font-size:clamp(55px,12vw,100px);font-weight:900;line-height:.95}
+.hero h1 span{color:#999}
+.hero p{color:#bbb;line-height:2;margin:20px auto;max-width:450px;font-size:13px}
+.status{display:inline-block;padding:9px 16px;background:#173b22;color:#8effa5;font-size:11px;font-weight:bold;margin:15px 0}
+section{padding:65px 7%}
+h2{font-size:27px;margin-bottom:15px}
+.sub{color:#888;font-size:12px;line-height:2}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:30px}
+.card{background:#131313;border:1px solid #303030;padding:28px}
+.card h3{margin:18px 0}
+.card p{font-size:12px;color:#999;line-height:2;margin-bottom:20px}
+.reward{text-align:center;background:#111}
+.reward img{width:100%;max-width:400px;margin:30px auto;display:block}
+.winner{background:#111;margin-top:20px;padding:20px;border:1px solid #333}
+footer{text-align:center;padding:45px;border-top:1px solid #222;color:#777;font-size:11px}
+#admin{display:none;background:#111;padding:25px 7%;border-top:2px solid #fff}
+input,select{width:100%;padding:13px;background:#080808;color:#fff;border:1px solid #444;margin:8px 0 18px}
+label{font-size:12px;color:#bbb}
+.admin-box{max-width:650px;margin:auto}
+.admin-box button{padding:13px 20px;border:0;font-weight:bold;margin:5px 4px 5px 0;cursor:pointer}
+.save{background:#fff;color:#000}.close{background:#a22;color:#fff}.open{background:#174c28;color:#fff}.danger{background:#702020;color:#fff}
+#adminLogin{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:20px}
+.loginbox{background:#171717;padding:30px;width:100%;max-width:350px;border:1px solid #555}
+.loginbox h2{margin-bottom:20px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.hero{padding:85px 20px}section{padding:55px 7%}}
+</style>
+</head>
+<body>
+<nav><div class="logo">VANDUSKY</div><button onclick="showLogin()">ADMIN</button></nav>
+<header class="hero">
+<div class="status" id="publicStatus">● EVENT OPEN</div>
+<h1>FREE<br><span>SHIRT.</span></h1>
+<p>Your chance to own VANDUSKY for FREE. Follow our TikTok and join our exclusive challenge!</p>
+<a class="btn" href="#join">JOIN THE CHALLENGE</a>
+</header>
+<section id="join">
+<h2>HOW TO JOIN?</h2><p class="sub">Dua langkah untuk mendapatkan kesempatan menang.</p>
+<div class="grid">
+<div class="card"><div>01</div><h3>FOLLOW VANDUSKY</h3><p>Follow akun TikTok resmi kami.</p><a class="btn" href="https://www.tiktok.com/@sela_anjay6" target="_blank" rel="noopener">FOLLOW TIKTOK</a></div>
+<div class="card"><div>02</div><h3>WIN THE CHALLENGE</h3><p>Hubungi admin dan ikuti challenge VANDUSKY.</p><a class="btn" href="https://wa.me/6285119733171?text=Halo%20VANDUSKY%2C%20saya%20mau%20ikut%20challenge!" target="_blank" rel="noopener">JOIN CHALLENGE</a></div>
+</div></section>
+<section class="reward"><h2>THE REWARD</h2><p class="sub">EXCLUSIVE VANDUSKY FREE SHIRT</p><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800" alt="Contoh kaos hadiah"><h2 id="stockText">STOK: 10 BAJU</h2><p class="sub">100% FREE FOR THE WINNERS.</p></section>
+<section><h2>WINNERS</h2><p class="sub">Pemenang resmi event VANDUSKY.</p><div id="winnerList"></div></section>
+<section id="admin"><div class="admin-box">
+<h2>VANDUSKY ADMIN</h2><p class="sub">EVENT MANAGEMENT DASHBOARD</p><br>
+<label>Status Event</label><select id="eventStatus"><option value="OPEN">OPEN</option><option value="CLOSED">CLOSED</option></select>
+<label>Jumlah pemenang maksimal</label><input id="winnerCount" type="number" min="0">
+<label>Stok baju gratis</label><input id="stock" type="number" min="0">
+<button class="save" onclick="saveSettings()">SIMPAN PENGATURAN</button><button class="close" onclick="setStatus('CLOSED')">TUTUP EVENT</button><button class="open" onclick="setStatus('OPEN')">BUKA EVENT</button>
+<hr style="border-color:#333;margin:25px 0">
+<h2>Tambah Pemenang</h2><label>Nama pemenang</label><input id="winnerName" placeholder="Masukkan nama pemenang">
+<button class="save" onclick="addWinner()">TAMBAH PEMENANG</button><div id="adminWinners"></div>
+<button class="danger" onclick="logout()">KELUAR ADMIN</button>
+</div></section>
+<footer><h2 style="letter-spacing:5px">VANDUSKY</h2><br>NOT JUST A BRAND. IT'S AN IDENTITY.<br><br>© 2026 VANDUSKY</footer>
+<div id="adminLogin"><div class="loginbox"><h2>ADMIN LOGIN</h2><label>Password admin</label><input type="password" id="password" placeholder="Masukkan password"><button class="save" onclick="login()">LOGIN</button><button onclick="hideLogin()">BATAL</button><p id="error" style="color:#f66;margin-top:12px"></p></div></div>
+<script>
+const ADMIN_PASSWORD="Vandusky2026!";
+let data={status:"OPEN",stock:10,count:3,winners:[]};
+function loadData(){try{let saved=localStorage.getItem("vanduskyEvent");if(saved)data=JSON.parse(saved)}catch(e){}render()}
+function saveData(){localStorage.setItem("vanduskyEvent",JSON.stringify(data));render()}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+document.getElementById("publicStatus").textContent=data.status==="OPEN"?"● EVENT OPEN":"● EVENT CLOSED";
+document.getElementById("publicStatus").style.background=data.status==="OPEN"?"#173b22":"#602020";
+document.getElementById("stockText").textContent="STOK: "+data.stock+" BAJU";
+document.getElementById("winnerList").innerHTML=data.winners.map(w=>'<div class="winner">🏆 '+escapeHTML(w)+'</div>').join("")||'<p class="sub">Belum ada pemenang diumumkan.</p>';
+document.getElementById("adminWinners").innerHTML=data.winners.map((w,i)=>'<div class="winner">'+escapeHTML(w)+' <button class="danger" onclick="removeWinner('+i+')">HAPUS</button></div>').join("");
+document.getElementById("eventStatus").value=data.status;document.getElementById("stock").value=data.stock;document.getElementById("winnerCount").value=data.count;
+}
+function showLogin(){document.getElementById("adminLogin").style.display="flex"}
+function hideLogin(){document.getElementById("adminLogin").style.display="none"}
+function login(){if(document.getElementById("password").value===ADMIN_PASSWORD){hideLogin();document.getElementById("admin").style.display="block";document.getElementById("admin").scrollIntoView()}else document.getElementById("error").textContent="Password salah!"}
+function logout(){document.getElementById("admin").style.display="none"}
+function saveSettings(){data.status=document.getElementById("eventStatus").value;data.stock=Math.max(0,Number(document.getElementById("stock").value));data.count=Math.max(0,Number(document.getElementById("winnerCount").value));saveData();alert("Pengaturan disimpan di browser ini.")}
+function setStatus(status){data.status=status;saveData();alert("Status event: "+status)}
+function addWinner(){let name=document.getElementById("winnerName").value.trim();if(!name)return alert("Masukkan nama pemenang!");if(data.winners.length>=data.count)return alert("Jumlah pemenang sudah mencapai batas!");data.winners.push(name);document.getElementById("winnerName").value="";saveData()}
+function removeWinner(index){data.winners.splice(index,1);saveData()}
+loadData();
+</script>
+</body>
+</html>
